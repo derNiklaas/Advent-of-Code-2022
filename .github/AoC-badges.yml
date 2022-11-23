@@ -1,0 +1,24 @@
+name: 🎄 Advent of Code Badges 🎄
+on:
+  schedule:
+    - cron: '3 12 1-25 12 *'
+  workflow_dispatch:
+  push:
+    paths:
+      - '**/Day*.kt' # only if a days source file was modified
+jobs:
+  build:
+    name: ⭐ Update badges 📅
+    runs-on: ubuntu-latest
+    if: startsWith(github.repository, 'derNiklaas') # don't run in forks
+    steps:
+      - uses: actions/checkout@v2
+      - uses: joblo2213/aoc-badges-action@v3
+        with:
+          userid: 455680
+          session: ${{ secrets.AOC_SESSION }}
+          year: 2022
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update badges
+          file_pattern: README.md
