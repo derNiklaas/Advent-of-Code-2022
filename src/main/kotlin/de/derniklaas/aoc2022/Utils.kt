@@ -2,9 +2,8 @@ package de.derniklaas.aoc2022
 
 import java.io.File
 
-public fun readFile(name: String): List<String> {
-    return File("src/main/resources/$name.txt").readLines()
-}
+public fun readFile(name: String, test: Boolean = false) =
+    File("src/${if (test) "test" else "main"}/resources/$name.txt").readLines()
 
 public fun List<String>.mapToInt() = map(String::toInt)
 
