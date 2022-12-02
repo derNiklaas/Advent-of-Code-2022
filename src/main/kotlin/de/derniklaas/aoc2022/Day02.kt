@@ -47,7 +47,6 @@ class Match(private val player1: RPSType, val player2: RPSType) {
         return if (player1.getLosingType(player1) == player2.getNormalType(player2)) 6
         else if (player1.getWinningType(player1) == player2.getNormalType(player2)) 0
         else 3
-
     }
 
     fun fixMatch(): Match {
