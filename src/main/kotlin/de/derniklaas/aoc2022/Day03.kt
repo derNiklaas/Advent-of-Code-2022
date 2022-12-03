@@ -7,55 +7,18 @@ fun main() {
 
 class Day03(private val input: List<Backpack>) : Day {
     override fun part1(): Int {
-        return input.sumOf { it.firstHalf.getOverlappingChar(it.secondHalf).getPriority() }
+        return input.sumOf {
+            it.firstHalf.toSet().intersect(it.secondHalf.toSet()).first().getPriority()
+        }
     }
 
     override fun part2(): Int {
         return input.windowed(3, 3).sumOf {
             val (first, second, third) = it
-            val firstBackpack = first.firstHalf + first.secondHalf
-            val secondBackpack = second.firstHalf + second.secondHalf
-            val thirdBackpack = third.firstHalf + third.secondHalf
-            val overlap = firstBackpack.getOverlappingChar(secondBackpack, thirdBackpack)
-            overlap.getPriority()
+            val overlap = first.items.toSet().intersect(second.items.toSet()).intersect(third.items.toSet())
+            overlap.first().getPriority()
         }
     }
-}
-
-private fun String.getOverlappingChar(other: String): Char {
-    this.forEach {
-        if (other.contains(it)) {
-            return it
-        }
-    }
-
-    other.forEach {
-        if (this.contains(it)) {
-            return it
-        }
-    }
-    error("No overlap")
-}
-
-private fun String.getOverlappingChar(other: String, other2: String): Char {
-    this.forEach {
-        if (other.contains(it) && other2.contains(it)) {
-            return it
-        }
-    }
-
-    other.forEach {
-        if (this.contains(it) && other2.contains(it)) {
-            return it
-        }
-    }
-
-    other2.forEach {
-        if (other.contains(it) && this.contains(it)) {
-            return it
-        }
-    }
-    error("No overlap")
 }
 
 private fun Char.getPriority(): Int {
@@ -66,13 +29,13 @@ private fun Char.getPriority(): Int {
     }
 }
 
-data class Backpack(val firstHalf: String, val secondHalf: String) {
+data class Backpack(val items: String, val firstHalf: String, val secondHalf: String) {
     companion object {
         fun fromInput(input: List<String>): List<Backpack> = input.map {
             val length = it.length
             val firstHalf = it.substring(0 until length / 2)
             val secondHalf = it.substring(length / 2 until length)
-            Backpack(firstHalf, secondHalf)
+            Backpack(it, firstHalf, secondHalf)
         }
     }
 }
