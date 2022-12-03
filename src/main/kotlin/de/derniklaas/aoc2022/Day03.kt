@@ -7,7 +7,7 @@ fun main() {
 
 class Day03(private val input: List<Backpack>) : Day {
     override fun part1(): Int {
-        return input.sumOf { it.firstHalf.removeOverlap(it.secondHalf).getPriority() }
+        return input.sumOf { it.firstHalf.getOverlappingChar(it.secondHalf).getPriority() }
     }
 
     override fun part2(): Int {
@@ -16,13 +16,13 @@ class Day03(private val input: List<Backpack>) : Day {
             val firstBackpack = first.firstHalf + first.secondHalf
             val secondBackpack = second.firstHalf + second.secondHalf
             val thirdBackpack = third.firstHalf + third.secondHalf
-            val overlap = firstBackpack.removeOverlap(secondBackpack, thirdBackpack)
+            val overlap = firstBackpack.getOverlappingChar(secondBackpack, thirdBackpack)
             overlap.getPriority()
         }
     }
 }
 
-fun String.removeOverlap(other: String): Char {
+private fun String.getOverlappingChar(other: String): Char {
     this.forEach {
         if (other.contains(it)) {
             return it
@@ -37,7 +37,7 @@ fun String.removeOverlap(other: String): Char {
     error("No overlap")
 }
 
-private fun String.removeOverlap(other: String, other2: String): Char {
+private fun String.getOverlappingChar(other: String, other2: String): Char {
     this.forEach {
         if (other.contains(it) && other2.contains(it)) {
             return it
