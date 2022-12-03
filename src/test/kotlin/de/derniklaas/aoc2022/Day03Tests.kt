@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class Day03Tests {
-    private val day03 = Day03(Backpack.fromInput(readFile("Day03", true)))
+    private val day03 = Day03(readFile("Day03", true))
 
     @Test
     public fun part1() {
