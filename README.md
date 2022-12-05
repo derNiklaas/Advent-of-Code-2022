@@ -1,8 +1,8 @@
 # Advent of Code 2022
 
 [![Language](https://img.shields.io/badge/Language-Kotlin-purple)](https://kotlinlang.org/)
-![](https://img.shields.io/badge/stars%20⭐-8-yellow)
-![](https://img.shields.io/badge/days%20completed-4-red)
+![](https://img.shields.io/badge/stars%20⭐-10-yellow)
+![](https://img.shields.io/badge/days%20completed-5-red)
 
 ## About Advent of Code
 Advent of Code is an advent calendar of small programming puzzles that can be solved in any programming language you like. You can find more information about Advent of Code [here](https://adventofcode.com/2022/about).
