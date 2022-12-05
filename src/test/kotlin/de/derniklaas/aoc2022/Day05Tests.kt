@@ -5,12 +5,11 @@ import org.junit.jupiter.api.Test
 
 class Day05Tests {
 
-    private val input = readFile("Day05")
+    private val input = readFile("Day05", true)
     private val moves = TowerMove.fromInput(input)
 
     @Test
     public fun part1() {
-
         Assertions.assertEquals("CMZ", Day05(Tower.fromInput(input), moves).part1())
     }
 
