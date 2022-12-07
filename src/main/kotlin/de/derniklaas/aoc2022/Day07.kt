@@ -118,6 +118,6 @@ data class Folder(val name: String, val parent: Folder?, val content: MutableSet
     }
 }
 
-data class File(val name: String, val size: Int) : AbstractFileType() {
+data class File(val name: String, private val size: Int) : AbstractFileType() {
     override fun getSize(): Int = size
 }
