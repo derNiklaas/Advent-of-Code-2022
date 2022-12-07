@@ -15,10 +15,8 @@ class Day07(private val input: Folder) : Day {
         while (folders.isNotEmpty()) {
             val folder = folders.first()
             folders -= folder
-
-            val size = folder.getSize()
             allFolders += folder
-            if (size <= 100000) {
+            if (folder.getSize() <= 100000) {
                 correctFolders += folder
             }
 
@@ -32,7 +30,7 @@ class Day07(private val input: Folder) : Day {
         return correctFolders.sumOf { it.getSize() }
     }
 
-    override fun part2(): Any {
+    override fun part2(): Int {
         val freeSpace = 70000000 - input.getSize()
         val folder = allFolders.filter { it.getSize() >= 30000000 - freeSpace }
             .minByOrNull { it.getSize() }!!
@@ -53,17 +51,17 @@ abstract class AbstractFileType {
                     when (command.split(" ")[0]) {
                         "cd" -> {
                             val folder = command.split(" ")[1]
-                            if (folder == "/") {
-                                currentNode = rootNode
-                            } else if (folder == "..") {
-                                currentNode = currentNode.parent ?: rootNode
-                            } else {
-                                currentNode.content += Folder(
-                                    "${currentNode.name}$folder/",
-                                    currentNode,
-                                    mutableSetOf()
-                                )
-                                currentNode = currentNode.getFolder(folder)
+                            currentNode = when (folder) {
+                                "/" -> rootNode
+                                ".." -> currentNode.parent ?: rootNode
+                                else -> {
+                                    currentNode.content += Folder(
+                                        "${currentNode.name}$folder/",
+                                        currentNode,
+                                        mutableSetOf()
+                                    )
+                                    currentNode.getFolder(folder)
+                                }
                             }
                         }
 
@@ -87,17 +85,13 @@ abstract class AbstractFileType {
             return rootNode
         }
     }
+
+    abstract fun getSize(): Int
 }
 
 data class Folder(val name: String, val parent: Folder?, val content: MutableSet<AbstractFileType>) :
     AbstractFileType() {
-    fun getSize(): Int = content.sumOf {
-        when (it) {
-            is File -> it.size
-            is Folder -> it.getSize()
-            else -> 0
-        }
-    }
+    override fun getSize(): Int = content.sumOf { it.getSize() }
 
     fun getFolder(name: String): Folder {
         content.forEach {
@@ -124,4 +118,6 @@ data class Folder(val name: String, val parent: Folder?, val content: MutableSet
     }
 }
 
-data class File(val name: String, val size: Int) : AbstractFileType()
+data class File(val name: String, val size: Int) : AbstractFileType() {
+    override fun getSize(): Int = size
+}
