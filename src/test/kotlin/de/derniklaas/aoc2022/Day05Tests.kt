@@ -9,12 +9,12 @@ class Day05Tests {
     private val moves = TowerMove.fromInput(input)
 
     @Test
-    public fun part1() {
+    fun part1() {
         Assertions.assertEquals("CMZ", Day05(Tower.fromInput(input), moves).part1())
     }
 
     @Test
-    public fun part2() {
+    fun part2() {
         Assertions.assertEquals("MCD", Day05(Tower.fromInput(input), moves).part2())
     }
 }

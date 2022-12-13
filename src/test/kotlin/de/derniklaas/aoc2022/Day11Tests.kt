@@ -10,12 +10,12 @@ class Day11Tests {
     private val day11 = Day11(input)
 
     @Test
-    public fun part1() {
+    fun part1() {
         Assertions.assertEquals(10605, day11.part1())
     }
 
     @Test
-    public fun part2() {
+    fun part2() {
         Assertions.assertEquals(2713310158, day11.part2())
     }
 }
