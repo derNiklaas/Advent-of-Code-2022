@@ -11,11 +11,11 @@ class Day13Tests {
 
     @Test
     public fun part1() {
-        Assertions.assertEquals(31, day13.part1())
+        Assertions.assertEquals(13, day13.part1())
     }
 
     @Test
     public fun part2() {
-        Assertions.assertEquals(29, day13.part2())
+        Assertions.assertEquals(27690, day13.part2())
     }
 }
