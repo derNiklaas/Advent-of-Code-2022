@@ -52,9 +52,8 @@ class Day14(val input: List<Pair<IntRange, IntRange>>) : Day {
     }
 
     private fun isOccupied(map: List<Pair<IntRange, IntRange>>, sand: Set<Vec2D>, position: Vec2D): Boolean {
-        val hitWall = map.any { (allX, allY) ->
+        return position in sand || map.any { (allX, allY) ->
             position.x in allX && position.y in allY
         }
-        return hitWall || position in sand
     }
 }
