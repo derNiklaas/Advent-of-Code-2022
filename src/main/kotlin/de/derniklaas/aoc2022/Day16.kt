@@ -1,7 +1,5 @@
 package de.derniklaas.aoc2022
 
-import java.util.PriorityQueue
-
 fun main() {
     val input = readFile("Day16").map(Valve::fromInput)
     Day16(input).execute()
@@ -9,61 +7,38 @@ fun main() {
 
 class Day16(val input: List<Valve>) : Day {
 
-    override fun part1(): Any {
-        val distances = input.associateWith { start ->
-            input.filter { it.flowRate > 0 }.associateWith { end ->
-                shortedDistanceBetweenNodes(start, end)
-            }
-        }
-        val queue = mutableListOf(Travel(30, listOf(), 0, input.first { it.name == "AA" }))
+    private val connections = input.associateWith { valve -> input.filter { it.name in valve.leadsTo } }
+    private val initial = input.first { it.name == "AA" }
+    private val seen = hashMapOf<Travel, Int>()
 
-        var maxSteam = 0
-        while (queue.isNotEmpty()) {
-            val travel = queue.removeFirst()
-            maxSteam = maxOf(travel.releasedSteam, maxSteam)
-            if (travel.timeLeft <= 0) continue
-            val currentPosition = travel.position
-            distances[currentPosition]!!.mapNotNullTo(queue) { (candidate, distance) ->
-                val timeLeft = travel.timeLeft - distance - 1
-                if (timeLeft > 0 && candidate !in travel.opened) {
-                    Travel(
-                        timeLeft,
-                        travel.opened + candidate,
-                        travel.releasedSteam + candidate.flowRate * timeLeft,
-                        candidate
+    override fun part1(): Int = solve(Travel(30, setOf(), initial))
+
+    override fun part2(): Int = solve(Travel(26, setOf(), initial, true))
+
+    private fun solve(travel: Travel): Int {
+        if (travel.timeLeft <= 0) {
+            return if (travel.partTwo)
+                solve(travel.copy(timeLeft = 26, position = initial, partTwo = false))
+            else 0
+        }
+        if (travel in seen) return seen[travel]!!
+        var result = 0
+
+        connections.getValue(travel.position).forEach {
+            result = maxOf(result, solve(travel.copy(position = it, timeLeft = travel.timeLeft - 1)))
+        }
+
+        if (travel.position.flowRate > 0 && travel.position !in travel.opened) {
+            result = maxOf(
+                result, solve(
+                    travel.copy(
+                        opened = travel.opened + travel.position, timeLeft = travel.timeLeft - 1
                     )
-                } else {
-                    null
-                }
-            }
+                ) + (travel.timeLeft - 1) * travel.position.flowRate
+            )
         }
-        return maxSteam
-    }
-
-    override fun part2(): Any {
-        return "TODO"
-    }
-
-    private fun shortedDistanceBetweenNodes(from: Valve, to: Valve): Int {
-        val nodes = input.map(::Node).associateBy { it.valve.name }
-        val startNode = nodes[from.name]!!.also { it.distance = 0 }
-        val endNode = nodes[to.name]!!
-
-        val queue = PriorityQueue<Node>(compareBy { it.distance })
-        queue += startNode
-        while (true) {
-            val node = queue.remove()!!
-            if (node == endNode) return endNode.distance
-            node.valve.leadsTo.mapNotNullTo(queue) { name ->
-                val child = nodes.getValue(name)
-                if (child.distance == Int.MAX_VALUE) {
-                    child.distance = node.distance + 1
-                    child
-                } else {
-                    null
-                }
-            }
-        }
+        seen[travel] = result
+        return result
     }
 }
 
@@ -79,6 +54,4 @@ data class Valve(val name: String, val flowRate: Int, val leadsTo: Set<String>) 
     }
 }
 
-data class Travel(val timeLeft: Int, val opened: List<Valve>, val releasedSteam: Int, val position: Valve)
-
-data class Node(val valve: Valve, var distance: Int = Int.MAX_VALUE)
+data class Travel(val timeLeft: Int, val opened: Set<Valve>, val position: Valve, val partTwo: Boolean = false)

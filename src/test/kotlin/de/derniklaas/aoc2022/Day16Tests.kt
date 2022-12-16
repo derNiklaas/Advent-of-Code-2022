@@ -11,10 +11,8 @@ class Day16Tests {
         Assertions.assertEquals(1651, day16.part1())
     }
 
-    /*
     @Test
     fun part2() {
         Assertions.assertEquals(1707, day16.part2())
     }
-    */
 }
