@@ -2,32 +2,34 @@ package de.derniklaas.aoc2022
 
 import java.io.File
 
-public fun readFile(name: String, test: Boolean = false) =
+fun readFile(name: String, test: Boolean = false) =
     File("src/${if (test) "test" else "main"}/resources/$name.txt").readLines()
 
-public fun List<String>.mapToInt() = map(String::toInt)
+fun List<String>.trimEach() = map(String::trim)
 
-public fun List<String>.splitAndMapToInt(deliminator: String = " ") = map { it.splitAndMapToInt(deliminator) }
+fun List<String>.mapToInt() = map(String::toInt)
 
-public fun List<String>.splitAndMapToInt(deliminator: Regex) = map { it.splitAndMapToInt(deliminator) }
+fun List<String>.splitAndMapToInt(deliminator: String = " ") = map { it.splitAndMapToInt(deliminator) }
 
-public fun String.splitAndMapToInt(deliminator: String = " ") = split(deliminator).filter(String::isNotEmpty).mapToInt()
+fun List<String>.splitAndMapToInt(deliminator: Regex) = map { it.splitAndMapToInt(deliminator) }
 
-public fun String.splitAndMapToInt(deliminator: Regex) = split(deliminator).filter(String::isNotEmpty).mapToInt()
+fun String.splitAndMapToInt(deliminator: String = " ") = split(deliminator).filter(String::isNotEmpty).mapToInt()
 
-public fun String.isLowerCase() = all(Char::isLowerCase)
+fun String.splitAndMapToInt(deliminator: Regex) = split(deliminator).filter(String::isNotEmpty).mapToInt()
 
-public fun String.isUpperCase() = all(Char::isUpperCase)
+fun String.isLowerCase() = all(Char::isLowerCase)
 
-public fun StringBuilder.deletePrefix(length: Int): StringBuilder = delete(0, length)
+fun String.isUpperCase() = all(Char::isUpperCase)
 
-public fun StringBuilder.takeAndDelete(length: Int): String {
+fun StringBuilder.deletePrefix(length: Int): StringBuilder = delete(0, length)
+
+fun StringBuilder.takeAndDelete(length: Int): String {
     val result = take(length)
     deletePrefix(length)
     return result.toString()
 }
 
-public fun Set<Int>.allPermutations(): Set<List<Int>> {
+fun Set<Int>.allPermutations(): Set<List<Int>> {
     if (this.isEmpty()) return emptySet()
     return _allPermutations(this.toList())
 }
