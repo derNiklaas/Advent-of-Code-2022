@@ -1,7 +1,5 @@
 package de.derniklaas.aoc2022
 
-import kotlin.math.abs
-
 fun main() {
     val input = readFile("Day09").map(MovementInstruction::fromInput)
     Day09(input).execute()
@@ -33,20 +31,6 @@ class Day09(val input: List<MovementInstruction>) : Day {
             }
         }
         return visited.size
-    }
-}
-
-data class Vec2D(val x: Int, val y: Int) {
-    fun isNeighbour(other: Vec2D): Boolean {
-        return abs(other.x - x) <= 1 && abs(other.y - y) <= 1
-    }
-
-    operator fun plus(other: Vec2D): Vec2D {
-        return Vec2D(x + other.x, y + other.y)
-    }
-
-    operator fun minus(other: Vec2D): Vec2D {
-        return Vec2D(x - other.x, y - other.y)
     }
 }
 
