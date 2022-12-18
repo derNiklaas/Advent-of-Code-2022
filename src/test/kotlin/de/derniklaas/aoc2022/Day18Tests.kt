@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class Day18Tests {
-    private val input = readFile("Day18").map {
+    private val input = readFile("Day18", true).map {
         val (x, y, z) = it.split(",").mapToInt()
         Vec3D(x, y, z)
     }
