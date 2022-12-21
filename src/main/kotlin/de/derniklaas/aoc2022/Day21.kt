@@ -13,25 +13,14 @@ class Day21(private val input: List<SmartMonkey>) : Day {
     override fun part2(): String {
         val rootMonkey = input.find { it.name == "root" } as OperationMonkey
         val path = getPath("humn", listOf("root")).drop(1).reversed()
-        //println(path)
-
         println("Please use: https://www.dcode.fr/equation-solver")
 
-        val equation = getWolframAlphaEquation("x", path, path.drop(1))
+        val equation = getEquation("x", path, path.drop(1))
         return if (rootMonkey.monkeyA in path) {
             "$equation = ${getValue(rootMonkey.monkeyB)}"
         } else {
             "$equation = ${getValue(rootMonkey.monkeyA)}"
         }
-
-        // my path
-        // [root, ddzt, ntvz, jjdn, hfww, fzsv, wqgj, lmbg, scjc, dtjj, grnm, zvpc, trgl, bvjz,
-        // splg, tvvf, ffzh, wbqs, dwcg, qwjc, qzqb, rcbg, svbm, qwgh, ppgq, lhgt, cbmt, lnjg,
-        // cbnw, bzdl, qfrp, dspj, bdtv, tnjr, wcst, jccp, vpmc, bzcs, vbcs, jdgl, vvbc, tzvd,
-        // nbtd, twds, gswg, crvv, psrw, lqqg, lcjw, hpsr, ppwb, rpnw, ngrr, cwvf, zqgq, wjnq,
-        // msfw, qtgm, fqhn, sdwn, mnzg, wwgn, wmwm, hrzt, bmcl, lfhj, zvff, humn]
-
-
     }
 
     private fun getValue(name: String): Long {
@@ -65,17 +54,16 @@ class Day21(private val input: List<SmartMonkey>) : Day {
         return emptyList()
     }
 
-    private fun getWolframAlphaEquation(equation: String, wholePath: List<String>, path: List<String>): String {
+    private fun getEquation(equation: String, wholePath: List<String>, path: List<String>): String {
         if (path.isEmpty()) return equation
         val monkey = input.find { it.name == path.first() } as OperationMonkey
         val nextPath = path.drop(1)
         return if (monkey.monkeyA in wholePath) {
-            getWolframAlphaEquation("($equation)${monkey.operation}${getValue(monkey.monkeyB)}", wholePath, nextPath)
+            getEquation("($equation)${monkey.operation}${getValue(monkey.monkeyB)}", wholePath, nextPath)
         } else {
-            getWolframAlphaEquation("${getValue(monkey.monkeyA)}${monkey.operation}($equation)", wholePath, nextPath)
+            getEquation("${getValue(monkey.monkeyA)}${monkey.operation}($equation)", wholePath, nextPath)
         }
     }
-
 }
 
 sealed class SmartMonkey(val name: String) {
