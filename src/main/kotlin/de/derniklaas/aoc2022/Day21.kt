@@ -72,24 +72,10 @@ sealed class SmartMonkey(val name: String) {
         fun fromInput(input: String): SmartMonkey {
             val splits = input.split(" ")
             val name = splits[0].replace(":", "")
-            if (splits.size == 2) {
-                return NumberMonkey(name, splits[1].toLong())
+            return if (splits.size == 2) {
+                NumberMonkey(name, splits[1].toLong())
             } else {
-                val monkeyA = splits[1]
-                val operation = splits[2]
-                val monkeyB = splits[3]
-                return OperationMonkey(name, monkeyA, monkeyB, operation)
-
-
-                /* { first: Int, second: Int ->
-                    when (op) {
-                        "+" -> first + second
-                        "-" -> first - second
-                        "*" -> first * second
-                        "/" -> first / second
-                        else -> error("Unknown math operation $op")
-                    }
-                } */
+                OperationMonkey(name, splits[1], splits[3], splits[2])
             }
         }
     }
@@ -97,6 +83,4 @@ sealed class SmartMonkey(val name: String) {
 
 class NumberMonkey(name: String, val number: Long) : SmartMonkey(name)
 
-class OperationMonkey(
-    name: String, val monkeyA: String, val monkeyB: String, val operation: String
-) : SmartMonkey(name)
+class OperationMonkey(name: String, val monkeyA: String, val monkeyB: String, val operation: String) : SmartMonkey(name)
