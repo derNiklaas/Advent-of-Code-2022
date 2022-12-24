@@ -45,3 +45,5 @@ private fun <T> _allPermutations(list: List<T>): Set<List<T>> {
     }
     return result
 }
+
+operator fun <T> List<T>.get(range: IntRange) = subList(range.first, range.last + 1)
