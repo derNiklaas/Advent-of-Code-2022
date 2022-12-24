@@ -47,3 +47,12 @@ private fun <T> _allPermutations(list: List<T>): Set<List<T>> {
 }
 
 operator fun <T> List<T>.get(range: IntRange) = subList(range.first, range.last + 1)
+
+/** Maps a given int to [0..[other]]*/
+infix fun Int.within(other: Int): Int {
+    var index = this
+    if (this < 0) {
+        index += other * (-index / other + 1)
+    }
+    return index % other
+}
